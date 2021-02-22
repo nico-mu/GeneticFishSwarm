@@ -12,7 +12,7 @@ def generateTerrain(canvas):
         goal: WindowConstants.goal_list,
     }
 
-    for obstacleType, obstacle in WindowConstants.obstacle_List.items():
+    for obstacle in WindowConstants.obstacle_List.values():
 
         key = canvas.create_rectangle(
             obstacle,

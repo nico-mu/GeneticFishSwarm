@@ -100,7 +100,7 @@ class Fish():
             if bounce:
                 self.pos[1] = newY
                 self.pos[0] = newX
-                
+
         else:
             newX = self.pos[2] + (self.pos[2] - self.pos[0]) / \
                 FishConstants.height * self.velocity
@@ -129,16 +129,16 @@ class Fish():
             width=FishConstants.width,
             fill=FishConstants.color
         )
-    
+
     def __checkBounce(self, x1, y1, x2, y2):
         overlappingObject = self.canvas.find_overlapping(
-                x1,
-                y1,
-                x2,
-                y2
-            )
+            x1,
+            y1,
+            x2,
+            y2
+        )
 
-        for k, v in self.terrain.items():
+        for k in self.terrain.keys():
             if k in overlappingObject:
                 if k == 1:
                     self.setFinished(True)
