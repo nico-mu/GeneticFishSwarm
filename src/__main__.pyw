@@ -30,7 +30,8 @@ root.resizable(False, False)
 GENERATION = 1
 
 canvas = Canvas(root, height=WindowConstants.height,
-                width=WindowConstants.width)
+                width=WindowConstants.width, 
+                background=WindowConstants.background_color)
 
 terrain = generateTerrain(canvas=canvas)
 

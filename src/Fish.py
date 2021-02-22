@@ -24,7 +24,7 @@ class Fish():
         self.__render()
 
     def draw(self):
-        if self.alive:
+        if self.alive and not self.finished:
             # a_list = [0, 5]
             # distribution = [.6, .4]
             # self.drift = random.choices(a_list, distribution)[0]

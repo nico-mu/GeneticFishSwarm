@@ -7,5 +7,5 @@ setup(
    author='Nico Muszalczyk',
    author_email='nico.muszalczyk@gmail.com',
    packages=['SmartFishSwarm'],
-   install_requires=['tkinter'],
+   install_requires=['tkinter', 'pyinstaller'],
 )

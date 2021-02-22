@@ -1,0 +1,1 @@
+pyinstaller -F ./src/__main__.pyw 

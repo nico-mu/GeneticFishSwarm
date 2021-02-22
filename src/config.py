@@ -15,6 +15,7 @@ class WindowConstants:
     ]
 
     obstacle_color = "grey"
+    background_color = "white"
 
     FPS = 120
 
@@ -76,7 +77,7 @@ class FishConstants:
     height = 20
     width = 5
     color = "black"
-    number_of_fish = 100
+    number_of_fish = 200
     max_velocity = 10
     max_drift = 25
     max_lifespan = 100
