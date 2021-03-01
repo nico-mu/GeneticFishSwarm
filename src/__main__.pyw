@@ -1,5 +1,5 @@
 from Swarm import Swarm
-from config import WindowConstants
+from config import FishConstants, WindowConstants
 from tkinter import TclError, Tk, Canvas
 
 
@@ -27,8 +27,6 @@ root = Tk()
 root.title("Fish")
 root.resizable(False, False)
 
-GENERATION = 1
-
 canvas = Canvas(root, height=WindowConstants.height,
                 width=WindowConstants.width, 
                 background=WindowConstants.background_color)
@@ -37,12 +35,10 @@ terrain = generateTerrain(canvas=canvas)
 
 FISH_SWARM = Swarm(root=root, canvas=canvas, terrain=terrain)
 
+deltaTime = 0
+
 try:
     while True:
-        root.title(f"Fish Generation : {GENERATION}")
-
-        FISH_SWARM.runSwarm()
-
-        GENERATION += 1
+        FISH_SWARM.run()
 except(TclError):
     pass

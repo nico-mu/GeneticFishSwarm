@@ -1,5 +1,4 @@
 import math
-import tkinter
 
 from config import FishConstants, WindowConstants
 
@@ -52,7 +51,7 @@ class Fish():
         distanceMax = math.sqrt(
             (goal_x - WindowConstants.width)**2 + (goal_y - WindowConstants.height)**2)
         if self.finished and self.alive:
-            return distanceMax * 5
+            return (distanceMax) * 5 + (FishConstants.max_lifespan - self.lifecircle) * 50
         else:
             distanceGoal = math.sqrt(
                 (goal_x - self.pos[0])**2 + (goal_y - self.pos[1])**2)

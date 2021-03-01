@@ -7,11 +7,13 @@ from Fish import Fish
 class Swarm:
 
     random.seed(time())
+    GENERATION = 1
 
     def __init__(self, root, canvas, terrain) -> None:
         self.terrain = terrain
         self.root = root
         self.canvas = canvas
+        self.deltaTime = 0
         self.fishSwarm = self.spawnSwarm()
 
     def spawnSwarm(self):
@@ -25,6 +27,8 @@ class Swarm:
     def simulateSwarm(self):
         for _ in range(FishConstants.max_lifespan):
             for fish in self.fishSwarm:
+                if fish.finished:
+                    continue
                 fish.draw()
                 for k, v in self.terrain.items():
                     overlappingObject = self.canvas.find_overlapping(
@@ -33,6 +37,7 @@ class Swarm:
                         if k == 1:
                             fish.setAlive(True)
                             fish.setFinished(True)
+                            self.__calculateDeltaTime(fish)
                         else:
                             fish.setAlive(False)
                             fish.setFinished(True)
@@ -64,9 +69,21 @@ class Swarm:
                 canvas=self.canvas, DNA=child, terrain=self.terrain)
         self.fishSwarm = newFishSwarm
 
-    def runSwarm(self):
+
+    def run(self):
+        self.__renderTitle()
+        self.deltaTime = 0
         self.simulateSwarm()
         self.mating()
+        self.GENERATION += 1
+
+    def __calculateDeltaTime(self, fish):
+        if fish.isAlive and fish.finished:
+            if self.deltaTime != 0:
+                self.deltaTime = (self.deltaTime + fish.lifecircle) // 2
+            else:
+                self.deltaTime = fish.lifecircle
+        self.__renderTitle()
 
     def __mutate(self, dna):
         for i in range(len(dna)):
@@ -78,3 +95,6 @@ class Swarm:
 
     def __getRandomDnaString(self):
         return [random.uniform(-FishConstants.max_velocity, FishConstants.max_velocity), random.uniform(-FishConstants.max_drift, FishConstants.max_drift)]
+
+    def __renderTitle(self):
+        self.root.title(f"Fish Generation : {self.GENERATION} | Average completion time : {self.deltaTime}")
