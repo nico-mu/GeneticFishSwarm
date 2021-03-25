@@ -9,12 +9,17 @@ class Swarm:
     random.seed(time())
     GENERATION = 1
 
-    def __init__(self, root, canvas, terrain) -> None:
+    def __init__(self, root, canvas, doTrackLine, terrain) -> None:
         self.terrain = terrain
         self.root = root
+        self.doTrackLine = doTrackLine
         self.canvas = canvas
         self.deltaTime = 0
         self.fishSwarm = self.spawnSwarm()
+        self.trackLine = 0
+
+    def getBestDNA(self):
+        return self.__calculateFitestFish().getDNA()
 
     def spawnSwarm(self):
         MATING_POOL = [
@@ -41,7 +46,10 @@ class Swarm:
                         else:
                             fish.setAlive(False)
                             fish.setFinished(True)
-            self.canvas.pack()
+            self.__clearTrackingLine()
+            if self.doTrackLine.get():
+                self.__renderTrackingLine(self.__calculateFitestFish().getCenter())
+            self.canvas.grid(row=2)
             self.root.update_idletasks()
             self.root.update()
             sleep(1 / WindowConstants.FPS)
@@ -69,13 +77,23 @@ class Swarm:
                 canvas=self.canvas, DNA=child, terrain=self.terrain)
         self.fishSwarm = newFishSwarm
 
-
     def run(self):
         self.__renderTitle()
         self.deltaTime = 0
         self.simulateSwarm()
         self.mating()
         self.GENERATION += 1
+
+    def __calculateFitestFish(self):
+        currentReward = 0
+        prevReward = 0
+        res = None
+        for fish in self.fishSwarm:
+            currentReward = fish.calculateReward()
+            if currentReward > prevReward:
+                res = fish
+                prevReward = currentReward
+        return res
 
     def __calculateDeltaTime(self, fish):
         if fish.isAlive and fish.finished:
@@ -96,5 +114,19 @@ class Swarm:
     def __getRandomDnaString(self):
         return [random.uniform(-FishConstants.max_velocity, FishConstants.max_velocity), random.uniform(-FishConstants.max_drift, FishConstants.max_drift)]
 
+    def __clearTrackingLine(self):
+        self.canvas.delete(self.trackLine)
+
+    def __renderTrackingLine(self, pos):
+        self.trackLine = self.canvas.create_line(
+            pos[0],
+            pos[1],
+            WindowConstants.goal_delta_X,
+            WindowConstants.goal_delta_Y,
+            width=WindowConstants.tracking_line_width,
+            fill=WindowConstants.tracking_line_color
+        )
+
     def __renderTitle(self):
-        self.root.title(f"Fish Generation : {self.GENERATION} | Average completion time : {self.deltaTime}")
+        self.root.title(
+            f"Fish Generation : {self.GENERATION} | Average completion time : {self.deltaTime}")

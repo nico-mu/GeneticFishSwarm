@@ -46,19 +46,23 @@ class Fish():
         ]
 
     def calculateReward(self):
-        goal_x = (WindowConstants.goal_x2 + WindowConstants.goal_x1) / 2
-        goal_y = (WindowConstants.goal_y2 + WindowConstants.goal_y1) / 2
+
         distanceMax = math.sqrt(
-            (goal_x - WindowConstants.width)**2 + (goal_y - WindowConstants.height)**2)
+            (WindowConstants.goal_delta_X - WindowConstants.width)**2 + (WindowConstants.goal_delta_Y - WindowConstants.height)**2)
         if self.finished and self.alive:
             return (distanceMax) * 5 + (FishConstants.max_lifespan - self.lifecircle) * 50
         else:
-            distanceGoal = math.sqrt(
-                (goal_x - self.pos[0])**2 + (goal_y - self.pos[1])**2)
+            distanceGoal = self.__calculateGoalDistance()
             if self.alive:
                 return distanceMax - distanceGoal
             else:
                 return (distanceMax - distanceGoal) / 5
+
+    def __calculateGoalDistance(self):
+        return math.sqrt((WindowConstants.goal_delta_X - self.pos[0])**2 + (WindowConstants.goal_delta_Y - self.pos[1])**2)
+
+    def getCenter(self):
+        return [(self.pos[2] + self.pos[0]) / 2, (self.pos[3] + self.pos[1]) / 2]
 
     def isAlive(self):
         return self.alive

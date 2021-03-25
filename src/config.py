@@ -2,11 +2,18 @@ class WindowConstants:
     height = 800
     width = 800
 
+    tracking_line_color = "green"
+    tracking_line_width = 2
+
     goal_color = "red"
     goal_x1 = (width // 2) - 10
     goal_y1 = 10
     goal_x2 = (width // 2) + 10
     goal_y2 = goal_y1 + 20
+
+    goal_delta_X = (goal_x2 + goal_x1) / 2
+    goal_delta_Y = (goal_y2 + goal_y1) / 2
+
     goal_list = [
         goal_x1,
         goal_y1,
@@ -80,4 +87,4 @@ class FishConstants:
     number_of_fish = 200
     max_velocity = 10
     max_drift = 25
-    max_lifespan = 100
+    max_lifespan = 200
