@@ -1,5 +1,6 @@
 import random
-from time import time, sleep
+from time import sleep, time
+
 from config import FishConstants, WindowConstants
 from Fish import Fish
 

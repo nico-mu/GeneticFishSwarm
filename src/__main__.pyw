@@ -1,8 +1,10 @@
-from tkinter.constants import END, NW, TOP
+from tkinter import (BooleanVar, Button, Canvas, Checkbutton, Entry, Frame,
+                     Scrollbar, StringVar, TclError, Tk)
+from tkinter.constants import END
+
+from config import WindowConstants
 from Swarm import Swarm
-from config import FishConstants, WindowConstants
-from tkinter import BooleanVar, Button, Checkbutton, Entry, Frame, Label, Scrollbar, StringVar, TclError, Tk, Canvas, WRITABLE
-from threading import Thread
+
 
 def generateTerrain(canvas):
     goal = canvas.create_rectangle(
@@ -23,11 +25,13 @@ def generateTerrain(canvas):
 
     return terrain
 
+
 def fillDNALabel():
     entry.configure(state="normal")
     entry.delete(0, END)
     entry.insert(0, FISH_SWARM.getBestDNA())
     entry.configure(state='readonly')
+
 
 def run():
     try:
@@ -36,12 +40,13 @@ def run():
     except(TclError):
         pass
 
+
 root = Tk()
 root.title("Fish")
 root.resizable(False, False)
 
 canvas = Canvas(root, height=WindowConstants.height,
-                width=WindowConstants.width, 
+                width=WindowConstants.width,
                 background=WindowConstants.background_color)
 
 
@@ -55,13 +60,15 @@ doTrackLine.set(False)
 trackLineButton = Checkbutton(frame, text="Track Line", variable=doTrackLine)
 trackLineButton.grid(row=0, column=0)
 
-FISH_SWARM = Swarm(root=root, canvas=canvas, doTrackLine=doTrackLine, terrain=terrain)
+FISH_SWARM = Swarm(root=root, canvas=canvas,
+                   doTrackLine=doTrackLine, terrain=terrain)
 
 showDNAButton = Button(frame, text="Show DNA", command=fillDNALabel)
 showDNAButton.grid(row=0, column=1, sticky="ew")
 
 entryVar = StringVar()
-entry = Entry(frame, textvariable=entryVar, state='readonly', width=int(WindowConstants.width/10))
+entry = Entry(frame, textvariable=entryVar, state='readonly',
+              width=int(WindowConstants.width/10))
 scroll = Scrollbar(frame, orient='horizontal', command=entry.xview)
 entry.config(xscrollcommand=scroll.set)
 

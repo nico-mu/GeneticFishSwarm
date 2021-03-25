@@ -92,17 +92,19 @@ class Fish():
 
         # use sin and cos to simulate ciruclar movement
         if degree != 0:
-            self.pos[2] += self.velocity * math.cos(degree)
-            self.pos[3] += self.velocity * math.sin(degree)
-            newY = self.pos[3] - \
+            newX2 = self.pos[2] + self.velocity * math.cos(degree)
+            newY2 = self.pos[3] + self.velocity * math.sin(degree)
+            newY1 = newY2 - \
                 (FishConstants.height * math.sin(degree))
-            newX = self.pos[2] - \
+            newX1 = newX2 - \
                 (FishConstants.height * math.cos(degree))
 
-            bounce = self.__checkBounce(newX, newY, self.pos[0], self.pos[1])
-            if bounce:
-                self.pos[1] = newY
-                self.pos[0] = newX
+            bounce = self.__checkBounce(newX1, newY1, self.pos[0], self.pos[1])
+            if type(bounce) == bool:
+                self.pos[3] = newY2
+                self.pos[2] = newX2
+                self.pos[1] = newY1
+                self.pos[0] = newX1
 
         else:
             newX = self.pos[2] + (self.pos[2] - self.pos[0]) / \
@@ -115,7 +117,7 @@ class Fish():
                 FishConstants.height * self.velocity
 
             bounce = self.__checkBounce(newX, newY, self.pos[0], self.pos[1])
-            if bounce:
+            if type(bounce) == bool:
                 self.pos[0] = newX2
                 self.pos[1] = newY2
                 self.pos[2] = newX
