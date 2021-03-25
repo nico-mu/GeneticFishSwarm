@@ -33,7 +33,7 @@ class Swarm:
                 for _ in range(int(self.numberOfFish.get()))]
 
     def simulateSwarm(self):
-        for _ in range(FishConstants.max_lifespan):
+        for _ in range(int(self.maxLifeSpan.get())):
             for fish in self.fishSwarm:
                 if fish.finished:
                     continue
