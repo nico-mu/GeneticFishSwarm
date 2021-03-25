@@ -10,10 +10,12 @@ class Swarm:
     random.seed(time())
     GENERATION = 1
 
-    def __init__(self, root, canvas, doTrackLine, terrain) -> None:
+    def __init__(self, root, canvas, doTrackLine, terrain, numberOfFish, maxLifeSpan) -> None:
         self.terrain = terrain
         self.root = root
+        self.maxLifeSpan = maxLifeSpan
         self.doTrackLine = doTrackLine
+        self.numberOfFish = numberOfFish
         self.canvas = canvas
         self.deltaTime = 0
         self.fishSwarm = self.spawnSwarm()
@@ -25,10 +27,10 @@ class Swarm:
     def spawnSwarm(self):
         MATING_POOL = [
             [self.__getRandomDnaString()
-             for _ in range(FishConstants.max_lifespan)]
+             for _ in range(int(self.maxLifeSpan.get()))]
             for _ in range(random.randint(100, 500))]
         return [Fish(canvas=self.canvas, DNA=random.choice(MATING_POOL), terrain=self.terrain)
-                for _ in range(FishConstants.number_of_fish)]
+                for _ in range(int(self.numberOfFish.get()))]
 
     def simulateSwarm(self):
         for _ in range(FishConstants.max_lifespan):
@@ -56,7 +58,7 @@ class Swarm:
             sleep(1 / WindowConstants.FPS)
 
     def mating(self):
-        newFishSwarm = [None] * len(self.fishSwarm)
+        newFishSwarm = [None] * int(self.numberOfFish.get())
         MATING_POOL = []
         bestReward = max([fish.calculateReward() for fish in self.fishSwarm])
         for fish in self.fishSwarm:
@@ -65,7 +67,7 @@ class Swarm:
             [MATING_POOL.append(fish.getDNA())
              for _ in range(int(likelihood))]
 
-        for i in range(len(self.fishSwarm)):
+        for i in range(int(self.numberOfFish.get())):
             retry = 100
             parentA = random.choice(MATING_POOL)
             parentB = random.choice(MATING_POOL)
