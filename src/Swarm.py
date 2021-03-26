@@ -18,19 +18,11 @@ class Swarm:
         self.numberOfFish = numberOfFish
         self.canvas = canvas
         self.deltaTime = 0
-        self.fishSwarm = self.spawnSwarm()
         self.trackLine = 0
+        self.fishSwarm = self.__spawnSwarm()
 
     def getBestDNA(self):
         return self.__calculateFitestFish().getDNA()
-
-    def spawnSwarm(self):
-        MATING_POOL = [
-            [self.__getRandomDnaString()
-             for _ in range(int(self.maxLifeSpan.get()))]
-            for _ in range(random.randint(100, 500))]
-        return [Fish(canvas=self.canvas, DNA=random.choice(MATING_POOL), terrain=self.terrain)
-                for _ in range(int(self.numberOfFish.get()))]
 
     def simulateSwarm(self):
         for _ in range(int(self.maxLifeSpan.get())):
@@ -51,7 +43,8 @@ class Swarm:
                             fish.setFinished(True)
             self.__clearTrackingLine()
             if self.doTrackLine.get():
-                self.__renderTrackingLine(self.__calculateFitestFish().getCenter())
+                self.__renderTrackingLine(
+                    self.__calculateFitestFish().getCenter())
             self.canvas.grid(row=2)
             self.root.update_idletasks()
             self.root.update()
@@ -86,6 +79,11 @@ class Swarm:
         self.simulateSwarm()
         self.mating()
         self.GENERATION += 1
+
+    def resetSwarm(self):
+        for fish in self.fishSwarm:
+            fish.clear()
+        self.fishSwarm = self.__spawnSwarm()
 
     def __calculateFitestFish(self):
         currentReward = 0
@@ -133,3 +131,11 @@ class Swarm:
     def __renderTitle(self):
         self.root.title(
             f"Fish Generation : {self.GENERATION} | Average completion time : {self.deltaTime}")
+
+    def __spawnSwarm(self):
+        MATING_POOL = [
+            [self.__getRandomDnaString()
+             for _ in range(int(self.maxLifeSpan.get()))]
+            for _ in range(random.randint(100, 500))]
+        return [Fish(canvas=self.canvas, DNA=random.choice(MATING_POOL), terrain=self.terrain)
+                for _ in range(int(self.numberOfFish.get()))]
