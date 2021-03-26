@@ -43,12 +43,12 @@ def run():
 
 def initSwarm():
     return Swarm(root=root, canvas=canvas,
-                 doTrackLine=doTrackLine, terrain=terrain, numberOfFish=numberOfFish, maxLifeSpan=maxLifeSpan)
+                 doTrackLine=doTrackLine, terrain=terrain, numberOfFish=numberOfFish, maxLifeSpan=maxLifeSpan, mutationRate=mutationRate)
 
 
 def initFrame():
     frame.grid(row=1)
-    resetButton.grid(row=0, column=4)
+    resetButton.grid(row=1, column=0)
     trackLineButton.grid(row=0, column=0)
     fishCountLabel.grid(row=0, column=2, sticky="ew")
     fishCountSpinBox.grid(row=1, column=2, sticky="ew")
@@ -57,12 +57,15 @@ def initFrame():
     showDNAButton.grid(row=0, column=1, sticky="ew")
     bestDNAEntry.grid(row=1, column=1, sticky='ew')
     scroll.grid(row=2, column=1, sticky='ew')
+    mutationRateLabel.grid(row=0, column=4, sticky="ew")
+    mutationRateSpinBox.grid(row=1, column=4, sticky="ew")
 
 
 def reset():
     doTrackLine.set(False)
     numberOfFish.set(str(FishConstants.number_of_fish))
     maxLifeSpan.set(str(FishConstants.max_lifespan))
+    mutationRate.set(str(FishConstants.mutations_rate))
     FISH_SWARM.resetSwarm()
     initFrame()
 
@@ -96,13 +99,19 @@ maxLifeSpanLabel = Label(frame, text="Number of Fish Lifecycles")
 maxLifeSpanSpinBox = Spinbox(
     frame, textvariable=maxLifeSpan, from_=0, to=10000)
 
+mutationRate = StringVar()
+mutationRate.set(str(FishConstants.mutations_rate))
+mutationRateLabel = Label(frame, text="Mutation Rate")
+mutationRateSpinBox = Spinbox(
+    frame, textvariable=mutationRate, from_=0.0, to=1.0, increment=0.005)
+
 FISH_SWARM = initSwarm()
 
 showDNAButton = Button(frame, text="Show DNA", command=fillDNALabel)
 
 bestDNAEntryVar = StringVar()
 bestDNAEntry = Entry(frame, textvariable=bestDNAEntryVar, state='readonly',
-                     width=int(WindowConstants.width/15))
+                     width=int(WindowConstants.width/18))
 scroll = Scrollbar(frame, orient='horizontal', command=bestDNAEntry.xview)
 bestDNAEntry.config(xscrollcommand=scroll.set)
 

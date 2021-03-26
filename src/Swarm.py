@@ -10,7 +10,7 @@ class Swarm:
     random.seed(time())
     GENERATION = 1
 
-    def __init__(self, root, canvas, doTrackLine, terrain, numberOfFish, maxLifeSpan) -> None:
+    def __init__(self, root, canvas, doTrackLine, terrain, numberOfFish, maxLifeSpan, mutationRate) -> None:
         self.terrain = terrain
         self.root = root
         self.maxLifeSpan = maxLifeSpan
@@ -20,6 +20,7 @@ class Swarm:
         self.deltaTime = 0
         self.trackLine = 0
         self.fishSwarm = self.__spawnSwarm()
+        self.mutationRate = mutationRate
 
     def getBestDNA(self):
         return self.__calculateFitestFish().getDNA()
@@ -106,9 +107,9 @@ class Swarm:
 
     def __mutate(self, dna):
         for i in range(len(dna)):
-            if random.random() < 0.01:
+            if random.random() < float(self.mutationRate.get()):
                 dna[i] = [dna[i][0], self.__getRandomDnaString()[1]]
-            if random.random() < 0.01:
+            if random.random() < float(self.mutationRate.get()):
                 dna[i] = [self.__getRandomDnaString()[0], dna[i][1]]
         return dna
 
