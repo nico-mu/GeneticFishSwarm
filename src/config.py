@@ -88,4 +88,4 @@ class FishConstants:
     max_velocity = 10
     max_drift = 25
     max_lifespan = 200
-    mutations_rate = 0.02
+    mutations_rate = 0.01
